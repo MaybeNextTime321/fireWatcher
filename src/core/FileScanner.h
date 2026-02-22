@@ -1,3 +1,4 @@
+
 #include <string>
 #include <filesystem>
 #include <vector>
@@ -8,7 +9,6 @@ struct FileEntry
     std::filesystem::path path;
     std::string filename() const { return path.filename().string(); };
 };
-
 
 class FileScanner
 {
@@ -26,6 +26,6 @@ private:
     const std::filesystem::path pathToFile;
     std::vector<std::string> blockedDirs;
     std::vector<std::string> blockedFormats;
-    bool IsPathBlocked(const std::string &pathToCheck) const;
+    bool IsPathBlocked(const std::string& pathToCheck) const;
     bool IsFormatBlocked(const std::filesystem::path& path) const;
 };

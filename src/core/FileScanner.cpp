@@ -55,7 +55,7 @@ void FileScanner::ResetBlockedDirs()
         "figma", "streamrandom", "shop", "stalkerguide", "prepare-commit-msg", "enable_all_feature_flags", "stalkermobs", "Texture"};
 }
 
-void FileScanner::ChangeBlockedFormats( const std::vector<std::string>& newBlockedFormats)
+void FileScanner::ChangeBlockedFormats(const std::vector<std::string>& newBlockedFormats)
 {
     blockedFormats = newBlockedFormats;
 }
