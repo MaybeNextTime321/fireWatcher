@@ -52,8 +52,9 @@ void FileScanner::ResetBlockedDirs()
     blockedDirs = {".git", ".gradle", ".gitattributes", ".gitignore", ".idea", "configurations", "FmodProject", "_localized", "sound",
         "icons", "textures", "maprend_overlays", "mcpatcher", "src", "models", "customnpcs", "highpoly", "behaviour", "weather",
         "ctmpatcher", "map_overlay", "gloomycore", "music", "aabb", "fonts", "stalkersounds", "stream", "figma_gui", "global_map", "video",
-        "figma", "streamrandom", "shop", "stalkerguide", "prepare-commit-msg", "enable_all_feature_flags", "stalkermobs", "Texture"};
+        "figma", "streamrandom", "shop", "stalkerguide", "prepare-commit-msg", "enable_all_feature_flags", "stalkermobs", "Texture", "particles"};
 }
+
 
 void FileScanner::ChangeBlockedFormats(const std::vector<std::string>& newBlockedFormats)
 {
