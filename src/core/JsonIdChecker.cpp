@@ -12,56 +12,61 @@ void JsonIdChecker::ProcessFile(const std::filesystem::path& fileToAdd)
 {
     using json = nlohmann::json;
 
-    std::ifstream f(std::filesystem::absolute(fileToAdd));
+    std::ifstream f(fileToAdd);
 
-    if (f.is_open())
+    if (!f.is_open())
     {
-        try
-        {
-            json data = json::parse(f, nullptr, false, true);
+        std::cout << "Could not open file by source: " << fileToAdd.string() << std::endl;
+        return;
+    }
 
-            if (data.is_array())
+    try
+    {
+        json data = json::parse(f, nullptr, false, true);
+
+        if (!data.is_array())
+        {
+            return;
+        }
+
+        for (json::iterator it = data.begin(); it != data.end(); ++it)
+        {
+            if (!it->is_object())
+            {
+                continue;
+            }
+            for (const auto& id : idNames)
             {
 
-                for (json::iterator it = data.begin(); it != data.end(); ++it)
+                if (!it->contains(id))
                 {
-                    if (it->is_object())
-                    {
-                        for (const auto id : idNames)
-                        {
-
-                            if (it->contains(id))
-                            {
-                                std::string idString;
-
-                                if (it->at(id).is_string())
-                                {
-                                    idString = it->at(id);
-                                }
-                                else if (it->at(id).is_number())
-                                {
-                                    idString = std::to_string((int)it->at(id));
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-
-                                fileEntry[idString].push_back(fileToAdd);
-                            }
-                        }
-                    }
+                    continue;
                 }
+
+                std::string idString;
+                const auto& value = it->at(id);
+
+                if (value.is_string())
+                {
+                    idString = value;
+                }
+
+                else if (value.is_number())
+                {
+                    idString = std::to_string(value.get<long long>());
+                }
+                else
+                {
+                    continue;
+                }
+
+                fileEntry[idString][fileToAdd]++;
             }
         }
-        catch (const std::exception& e)
-        {
-            std::cerr << "JSON ERROR: " << e.what() << std::endl;
-        }
     }
-    else
+    catch (const std::exception& e)
     {
-        std::cout << "Could not open file by sourse: " << fileToAdd.string() << std::endl;
+        std::cerr << "JSON ERROR: " << e.what() << std::endl;
     }
 }
 
@@ -69,11 +74,16 @@ std::unordered_map<std::string, std::vector<std::filesystem::path>> JsonIdChecke
 {
     std::unordered_map<std::string, std::vector<std::filesystem::path>> result;
 
-    for (const auto& entry : fileEntry)
+    for (const auto& id : fileEntry)
     {
-        if (entry.second.size() > 1)
+        const bool isMultipleFiles = id.second.size() > 1;
+
+        for (const auto entry : id.second)
         {
-            result.emplace(entry);
+            if (isMultipleFiles || entry.second > 1)
+            {
+                result[id.first].push_back(entry.first);
+            }
         }
     }
 

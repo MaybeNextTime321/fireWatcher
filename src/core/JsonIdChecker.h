@@ -11,6 +11,6 @@ public:
     std::unordered_map<std::string, std::vector<std::filesystem::path>> GetDuplicates() const;
 
 private:
-    std::unordered_map<std::string, std::vector<std::filesystem::path>> fileEntry;
+    std::unordered_map<std::string, std::unordered_map<std::filesystem::path, int>> fileEntry;
     const std::vector<std::string> idNames{"item_id", "id", "object_id"};
 };
