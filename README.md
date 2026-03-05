@@ -113,7 +113,7 @@ v0.1 (Done)
 - File system scanner  
 - Directory and format filtering  
 
-v0.2  
+v0.2  (Done)
 - Localization duplicate key checker  
 - JSON ID duplicate checker  
 
